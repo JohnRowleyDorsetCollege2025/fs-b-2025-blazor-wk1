@@ -1,0 +1,28 @@
+﻿@page "/movies/{id:int}"
+@using System.Globalization
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    private Movie? movie;
+
+    protected override async Task OnInitializedAsync()
+    {
+      
+        movie = MovieRepository.GetMovies().FirstOrDefault(m => m.Id == id);
+    }
+}
+@if (movie == null)
+{
+    <p>Movie Not Found</p>
+}
+else
+{
+    <h3>@movie.Title</h3>
+    <ul class="list-unstyled">
+        <li><strong>Genre:</strong> @movie.Genre</li>
+        <li><strong>Release Year:</strong> @movie.ReleaseYear</li>
+        <li><strong>Director:</strong> @movie.Director</li>
+        <li><strong>Rating:</strong> @movie.Rating.ToString("0.0", CultureInfo.InvariantCulture)</li>
+    </ul>
+}
